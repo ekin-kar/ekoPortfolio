@@ -27,10 +27,12 @@
 
   .mobileLinks {
     position: absolute;
-    background-color: rgb(173, 173, 173);
+    background-color: var(--bgSoft);
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
     top: 100px;
     right: 0;
-    width: 50%;
+    width: 40%;
     height: calc(100vh - 200px);
     display: flex;
     flex-direction: column;

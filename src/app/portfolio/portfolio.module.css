@@ -1,27 +1,39 @@
 .portfolio {
   padding: 20px;
-  background: var(--bgSoft);
   overflow-x: auto;
   overflow-y: scroll;
   height: calc(100vh - 200px);
   white-space: nowrap;
 }
 
-.portfolio h2 {
-  margin: 10px;
+.wrapper {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.smallText {
-  font-size: 0.8rem;
+.title {
+  margin-bottom: 50px;
+}
+
+.worthCard {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.worth {
   color: var(--text);
   font-weight: bold;
-  margin-bottom: 10px;
 }
-.bigText {
+.worthVal {
   font-size: 1.5rem;
   color: var(--text);
   font-weight: bold;
-  margin-bottom: 10px;
 }
 
 .profit {
@@ -37,12 +49,52 @@
   border-radius: 10px;
 }
 
+.wrapper {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.buttonsWrapper {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  background-color: var(--textSoft);
+  color: var(--text);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: var(--text);
+  color: var(--bg);
+}
+
 @media screen and (max-width: 768px) {
-  .bigText {
-    font-size: 1.2rem;
+  .worthVal {
+    font-size: 1rem;
   }
-  .smallText {
+  .title {
+    font-size: 1rem;
+  }
+  .buttonsWrapper {
+    gap: 10px;
+  }
+  .button {
     font-size: 0.7rem;
+  }
+  .worth {
+    font-size: 0.6rem;
   }
   .profit {
     font-size: 0.7rem;
@@ -50,20 +102,27 @@
 }
 
 @media screen and (max-width: 640px) {
-  .bigText {
+  .worthVal {
     font-size: 0.8rem;
+  }
+  .button {
+    padding: 5px;
+    min-width: 80px;
   }
 }
 @media (max-width: 475px) {
-  .bigText {
+  .worthVal {
     font-size: 0.6rem;
   }
-  .smallText {
+  .worth {
     font-size: 0.5rem;
   }
   .profit {
     font-size: 0.6rem;
     height: 20px;
     width: 40px;
+  }
+  .button {
+    min-width: 50px;
   }
 }

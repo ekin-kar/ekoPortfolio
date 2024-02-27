@@ -1,11 +1,9 @@
 import styles from "./card.module.css";
 
-const Card = ({ children, width }) => {
-  const cardStyles = {
-    width: width || "100%",
-  };
+const Card = ({ children, style }) => {
+  console.log(style);
   return (
-    <div className={styles.card} style={cardStyles}>
+    <div className={styles.card} style={style}>
       {children}
     </div>
   );

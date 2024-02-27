@@ -1,11 +1,17 @@
-.container{
+.container {
   height: 100px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.logo{
+.logo {
   font-size: 30px;
   font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .logo {
+    font-size: 20px;
+  }
 }

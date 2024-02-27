@@ -2,7 +2,7 @@
 import Image from "next/image";
 import styles from "./table.module.css";
 import { useState } from "react";
-import Card from "../card/Card";
+import { useRouter } from "next/navigation";
 
 const initialCoinsData = [
   {
@@ -100,7 +100,11 @@ const initialCoinsData = [
 const Table = () => {
   const [coinsData, setCoinsData] = useState(initialCoinsData);
   const [sortOrder, setSortOrder] = useState("asc");
+  const router = useRouter();
 
+  const handleRowClick = (coinSymbol) => {
+    router.push(`/portfolio/${coinSymbol.toLowerCase()}`);
+  };
   const sortByColumn = (column) => {
     const sortedData = [...coinsData].sort((a, b) => {
       let valueA, valueB;
@@ -148,73 +152,72 @@ const Table = () => {
   };
 
   return (
-      <table className={styles.table}>
-        <thead>
-          <tr className={styles.clickable}>
-            <td
-              onClick={() => sortByColumn("name")}
-              className={(styles.nameColumn, styles.tableHeaders)}
-            >
-              Name
-            </td>
-            <td
-              className={styles.tableHeaders}
-              onClick={() => sortByColumn("amount")}
-            >
-              Amount
-            </td>
-            <td
-              onClick={() => sortByColumn("price")}
-              className={(styles.smallColumn, styles.tableHeaders)}
-            >
-              Price
-            </td>
-            <td
-              onClick={() => sortByColumn("change")}
-              className={(styles.smallColumn, styles.tableHeaders)}
-            >
-              24h Change
-            </td>
-            <td
-              className={styles.tableHeaders}
-              onClick={() => sortByColumn("avgPrice")}
-            >
-              Avg Price
-            </td>
-            <td
-              className={styles.tableHeaders}
-              onClick={() => sortByColumn("total")}
-            >
-              Total
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          {coinsData.map((coin) => (
-            <tr key={coin.id} className={styles.rows}>
-              <td className={(styles.coinCell, styles.nameColumn)}>
-                <div className={styles.coinInfo}>
-                  <Image
-                    src={coin.img}
-                    alt={coin.name}
-                    width={50}
-                    height={50}
-                  />
-                  <div>
-                    <p className={styles.coinName}>{coin.name}</p>
-                    <p className={styles.coinSymbol}>{coin.symbol}</p>
-                  </div>
+    <table className={styles.table}>
+      <thead>
+        <tr className={styles.headRow}>
+          <td
+            onClick={() => sortByColumn("name")}
+            className={(styles.nameColumn, styles.headerCells)}
+          >
+            Name
+          </td>
+          <td
+            className={styles.headerCells}
+            onClick={() => sortByColumn("amount")}
+          >
+            Amount
+          </td>
+          <td
+            onClick={() => sortByColumn("price")}
+            className={styles.headerCells}
+          >
+            Price
+          </td>
+          <td
+            onClick={() => sortByColumn("change")}
+            className={styles.headerCells}
+          >
+            24h Change
+          </td>
+          <td
+            className={styles.headerCells}
+            onClick={() => sortByColumn("avgPrice")}
+          >
+            Avg Price
+          </td>
+          <td
+            className={styles.headerCells}
+            onClick={() => sortByColumn("total")}
+          >
+            Total
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        {coinsData.map((coin) => (
+          <tr
+            key={coin.id}
+            className={styles.rows}
+            onClick={() => handleRowClick(coin.symbol)}
+          >
+            <td className={styles.columns}>
+              <div className={styles.coinInfo}>
+                <Image src={coin.img} alt={coin.name} width={50} height={50} />
+                <div>
+                  <p className={styles.coinName}>{coin.name}</p>
+                  <p className={styles.coinSymbol}>{coin.symbol}</p>
                 </div>
-              </td>
-              <td className={styles.smallColumn}>{coin.amount}</td>
-              <td className={styles.smallColumn}>${coin.price}</td>
-              <td className={styles.smallColumn}>%{coin.change}</td>
-              <td className={styles.smallColumn}>${coin.price}</td>
-              <td>${coin.price * coin.amount}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </div>
+            </td>
+            <td className={styles.columns}>{coin.amount}</td>
+            <td className={styles.columns}>${coin.price}</td>
+            <td className={styles.columns}>%{coin.change}</td>
+            <td className={styles.columns}>${coin.price}</td>
+            <td className={styles.columns}>${coin.price * coin.amount}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 export default Table;

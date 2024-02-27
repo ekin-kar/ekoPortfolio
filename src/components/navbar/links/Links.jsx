@@ -30,7 +30,7 @@ const Links = () => {
     <div className={styles.container}>
       <div className={styles.links}>
         {links.map((link) => (
-          <NavLink item={link} key={link.title} />
+          <NavLink className={styles.link} item={link} key={link.title} />
         ))}
       </div>
       <Image
