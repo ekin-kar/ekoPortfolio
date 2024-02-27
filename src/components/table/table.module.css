@@ -23,6 +23,8 @@
 
 .coinInfo img {
   filter: invert(100%);
+  max-width: 40px; /* Set a maximum width for the images */
+  height: auto; /* Maintain aspect ratio */
 }
 
 .coinSymbol {
@@ -48,4 +50,73 @@
 }
 .tableHeaders:hover {
   background-color: var(--bgSoft);
+}
+
+@media (max-width: 1720px) {
+  .table {
+    font-size: 1.1rem;
+  }
+  .coinInfo img {
+    max-width: 30px; /* Adjust the maximum width of the images */
+  }
+}
+
+@media (max-width: 1536px) {
+  .table {
+    font-size: 1rem;
+  }
+  .coinInfo img {
+    max-width: 25px; /* Adjust the maximum width of the images */
+  }
+}
+
+@media (max-width: 1366px) {
+  .table {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 1280px) {
+  .table {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .table {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .table {
+    font-size: 0.7rem;
+  }
+  .coinInfo img {
+    max-width: 20px;
+  }
+  .table td {
+    padding: 5px;
+  }
+  .coinInfo {
+    gap: 5px;
+  }
+}
+
+@media (max-width: 640px) {
+  .table {
+    font-size: 0.5rem;
+  }
+}
+
+@media (max-width: 475px) {
+  .table {
+    font-size: 0.5rem;
+  }
+  .coinInfo img {
+    max-width: 12px;
+  }
+  .table td {
+    padding: 4px;
+  }
 }

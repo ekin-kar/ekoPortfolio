@@ -148,7 +148,6 @@ const Table = () => {
   };
 
   return (
-    <Card>
       <table className={styles.table}>
         <thead>
           <tr className={styles.clickable}>
@@ -216,7 +215,6 @@ const Table = () => {
           ))}
         </tbody>
       </table>
-    </Card>
   );
 };
 export default Table;

@@ -2,10 +2,68 @@
   padding: 20px;
   background: var(--bgSoft);
   overflow-x: auto;
+  overflow-y: scroll;
   height: calc(100vh - 200px);
   white-space: nowrap;
 }
 
 .portfolio h2 {
-  margin: 30px;
+  margin: 10px;
+}
+
+.smallText {
+  font-size: 0.8rem;
+  color: var(--text);
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.bigText {
+  font-size: 1.5rem;
+  color: var(--text);
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.profit {
+  font-size: 0.8rem;
+  font-weight: bold;
+  background: var(--bgSoft);
+  height: 30px;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: green;
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .bigText {
+    font-size: 1.2rem;
+  }
+  .smallText {
+    font-size: 0.7rem;
+  }
+  .profit {
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .bigText {
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 475px) {
+  .bigText {
+    font-size: 0.6rem;
+  }
+  .smallText {
+    font-size: 0.5rem;
+  }
+  .profit {
+    font-size: 0.6rem;
+    height: 20px;
+    width: 40px;
+  }
 }
