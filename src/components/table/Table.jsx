@@ -2,6 +2,7 @@
 import Image from "next/image";
 import styles from "./table.module.css";
 import { useState } from "react";
+import Card from "../card/Card";
 
 const initialCoinsData = [
   {
@@ -147,37 +148,52 @@ const Table = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <Card>
       <table className={styles.table}>
-        <thead className={styles.header}>
-          <tr>
+        <thead>
+          <tr className={styles.clickable}>
             <td
               onClick={() => sortByColumn("name")}
-              className={styles.nameColumn}
+              className={(styles.nameColumn, styles.tableHeaders)}
             >
               Name
             </td>
-            <td onClick={() => sortByColumn("amount")}>Amount</td>
+            <td
+              className={styles.tableHeaders}
+              onClick={() => sortByColumn("amount")}
+            >
+              Amount
+            </td>
             <td
               onClick={() => sortByColumn("price")}
-              className={styles.smallColumn}
+              className={(styles.smallColumn, styles.tableHeaders)}
             >
               Price
             </td>
             <td
               onClick={() => sortByColumn("change")}
-              className={styles.smallColumn}
+              className={(styles.smallColumn, styles.tableHeaders)}
             >
               24h Change
             </td>
-            <td onClick={() => sortByColumn("avgPrice")}>Avg Price</td>
-            <td onClick={() => sortByColumn("total")}>Total</td>
+            <td
+              className={styles.tableHeaders}
+              onClick={() => sortByColumn("avgPrice")}
+            >
+              Avg Price
+            </td>
+            <td
+              className={styles.tableHeaders}
+              onClick={() => sortByColumn("total")}
+            >
+              Total
+            </td>
           </tr>
         </thead>
         <tbody>
           {coinsData.map((coin) => (
-            <tr key={coin.id}>
-              <td className={styles.coinCell}>
+            <tr key={coin.id} className={styles.rows}>
+              <td className={(styles.coinCell, styles.nameColumn)}>
                 <div className={styles.coinInfo}>
                   <Image
                     src={coin.img}
@@ -191,16 +207,16 @@ const Table = () => {
                   </div>
                 </div>
               </td>
-              <td>{coin.amount}</td>
+              <td className={styles.smallColumn}>{coin.amount}</td>
               <td className={styles.smallColumn}>${coin.price}</td>
               <td className={styles.smallColumn}>%{coin.change}</td>
-              <td>${coin.price}</td>
+              <td className={styles.smallColumn}>${coin.price}</td>
               <td>${coin.price * coin.amount}</td>
             </tr>
           ))}
         </tbody>
       </table>
-    </div>
+    </Card>
   );
 };
 export default Table;

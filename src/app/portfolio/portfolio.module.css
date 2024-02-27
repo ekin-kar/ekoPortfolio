@@ -1,12 +1,11 @@
 .portfolio {
   padding: 20px;
-  background: #b6bbc4;
+  background: var(--bgSoft);
   overflow-x: auto;
   height: calc(100vh - 200px);
   white-space: nowrap;
 }
 
 .portfolio h2 {
-  color: #333;
   margin: 30px;
 }
