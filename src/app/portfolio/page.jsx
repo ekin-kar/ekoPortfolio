@@ -1,8 +1,21 @@
+"use client";
+import React, { useState } from "react";
 import Card from "@/components/card/Card";
 import styles from "./portfolio.module.css";
 import Table from "@/components/table/Table";
+import Modal from "@/components/modal/Modal";
 
 const Portfolio = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className={styles.portfolio}>
       <h2 className={styles.title}>My Portfolio</h2>
@@ -14,12 +27,15 @@ const Portfolio = () => {
         </div>
         <div className={styles.buttonsWrapper}>
           <button className={styles.button}>Sync</button>
-          <button className={styles.button}>Add New Coin</button>
+          <button className={styles.button} onClick={openModal}>
+            Add New Coin
+          </button>
         </div>
       </div>
       <Card>
         <Table />
       </Card>
+      <Modal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   );
 };
