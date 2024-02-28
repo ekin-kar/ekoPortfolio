@@ -63,6 +63,9 @@ input::-webkit-inner-spin-button {
   height: calc(100vh - 200px);
   overflow-y: auto;
   border-radius: 7px;
+  padding: 20px;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 .scrollable-content::-webkit-scrollbar {
