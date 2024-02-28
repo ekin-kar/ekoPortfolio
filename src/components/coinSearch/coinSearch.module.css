@@ -1,0 +1,57 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.searchContainer {
+  width: 90%;
+  padding: 10px;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: var(--text);
+  border: none;
+  border-radius: 7px;
+}
+
+.coinListContainer {
+  background-color: var(--bgSoft);
+  flex: 1;
+  padding: 10px;
+  max-height: 200px;
+  width: 90%;
+  border-radius: 7px;
+  overflow-y: auto;
+}
+
+.coinList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.coinList li {
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.coinList li:hover {
+  background-color: var(--textSoft);
+  color: var(--text);
+}
+
+.selectedCoin {
+  background-color: var(--text);
+  color: var(--bg);
+}
+
+.selectedCoinText {
+  margin-top: 10px;
+}

@@ -42,6 +42,12 @@ a {
   background-color: transparent;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .container {
   width: 1536px;
   margin: auto;
@@ -94,6 +100,7 @@ a {
     width: 864px;
   }
 }
+
 @media (max-width: 864px) {
   .container {
     width: 768px;
