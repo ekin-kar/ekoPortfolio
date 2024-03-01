@@ -1,0 +1,237 @@
+.cardsWrapper {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.cardWrapper {
+  width: 18%;
+  display: flex;
+  height: 100px;
+  gap: 15px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.profit {
+  font-weight: bold;
+  color: green;
+}
+.inputWrapper {
+  width: 18%;
+  height: 100px;
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.changeWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.smallText {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.midText {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.profitWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.input {
+  width: 100%;
+  padding: 7px;
+  border-radius: 5px;
+  border: 1px solid var(--text);
+}
+
+.transactionsCard {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.transaction {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.table {
+  border-spacing: 0;
+}
+
+.table td {
+  padding: 10px;
+}
+
+.columns {
+  width: 10%;
+  height: 50px;
+}
+
+.headRow {
+  cursor: pointer;
+  border-radius: 100px;
+  font-weight: bold;
+}
+
+.rows:hover {
+  background-color: var(--bg);
+  cursor: pointer;
+}
+.headerCells:hover {
+  background-color: var(--bg);
+}
+
+.headerCells {
+  border-radius: 10px;
+}
+.rows td:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.rows td:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+@media (max-width: 1720px) {
+  .table {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 1536px) {
+  .table {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 1366px) {
+  .table {
+    font-size: 0.9rem;
+  }
+  .cardTitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 1280px) {
+  .table {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .table {
+    font-size: 0.8rem;
+  }
+  .cardTitle {
+    font-size: 0.9rem;
+  }
+  .midText {
+    font-size: 0.9rem;
+  }
+  .input {
+    padding: 4px;
+  }
+  .cardsWrapper {
+    gap: 10px;
+  }
+  .profit {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .table {
+    font-size: 0.7rem;
+  }
+
+  .table td {
+    padding: 5px;
+  }
+
+  .cardTitle {
+    font-size: 0.7rem;
+  }
+  .midText {
+    font-size: 0.6rem;
+  }
+  .input {
+    padding: 4px;
+  }
+}
+
+@media (max-width: 640px) {
+  .table {
+    font-size: 0.5rem;
+  }
+  .cardTitle {
+    font-size: 0.5rem;
+  }
+  .midText {
+    font-size: 0.5rem;
+  }
+  .profit {
+    font-size: 0.5rem;
+  }
+  .input {
+    padding: 2px;
+  }
+  .cardsWrapper {
+    gap: 5px;
+  }
+  .cardWrapper,
+  .inputWrapper {
+    height: 70px;
+  }
+}
+
+@media (max-width: 475px) {
+  .table {
+    font-size: 0.5rem;
+  }
+
+  .table td {
+    padding: 4px;
+  }
+  .cardTitle {
+    font-size: 0.4rem;
+  }
+  .midText {
+    font-size: 0.4rem;
+  }
+  .profit {
+    font-size: 0.4rem;
+  }
+  .input {
+    padding: 0px;
+  }
+}
