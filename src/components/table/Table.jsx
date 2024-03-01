@@ -3,152 +3,34 @@ import Image from "next/image";
 import styles from "./table.module.css";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
-const initialCoinsData = [
-  {
-    id: 1,
-    name: "Bitcoin",
-    amount: 1,
-    symbol: "BTC",
-    price: 50000,
-    change: 0.5,
-    img: "/btc.png",
-  },
-  {
-    id: 2,
-    name: "Ethereum",
-    amount: 10,
-    symbol: "ETH",
-    price: 2000,
-    change: 1,
-    img: "/eth.png",
-  },
-  {
-    id: 3,
-    name: "Cardano",
-    amount: 500,
-    symbol: "ADA",
-    price: 2,
-    change: 2,
-    img: "/ada.png",
-  },
-  {
-    id: 4,
-    name: "Polkadot",
-    amount: 100,
-    symbol: "DOT",
-    price: 30,
-    change: 3.6,
-    img: "/dot.png",
-  },
-  {
-    id: 5,
-    name: "Chainlink",
-    amount: 60,
-    symbol: "LINK",
-    price: 30,
-    change: -4,
-    img: "/link.png",
-  },
-  {
-    id: 6,
-    name: "Litecoin",
-    amount: 5,
-    symbol: "LTC",
-    price: 200,
-    change: 0.5,
-    img: "/ltc.png",
-  },
-  {
-    id: 7,
-    name: "Stellar",
-    amount: 1000,
-    symbol: "XLM",
-    price: 0.5,
-    change: 0.5,
-    img: "/xlm.png",
-  },
-  {
-    id: 8,
-    name: "Uniswap",
-    amount: 20,
-    symbol: "UNI",
-    price: 30,
-    change: 0.5,
-    img: "/uni.png",
-  },
-  {
-    id: 9,
-    name: "Aave",
-    amount: 5,
-    symbol: "AAVE",
-    price: 300,
-    change: 0.5,
-    img: "/aave.png",
-  },
-  {
-    id: 10,
-    name: "Avalanche",
-    amount: 10,
-    symbol: "AVAX",
-    price: 50,
-    change: 0.5,
-    img: "/avax.png",
-  },
-];
+import { coins } from "@/lib/data";
+import { sortData } from "@/lib/tableSort";
 
 const Table = () => {
-  const [coinsData, setCoinsData] = useState(initialCoinsData);
+  const [coinsData, setCoinsData] = useState(coins);
   const [sortOrder, setSortOrder] = useState("asc");
+  const [sortColumn, setSortColumn] = useState(null);
+
   const router = useRouter();
+
+  const sortByColumn = (column) => {
+    const order = column === sortColumn && sortOrder === "asc" ? "desc" : "asc";
+    const sortedData = sortData(column, order, coinsData);
+
+    setCoinsData(sortedData);
+    setSortColumn(column);
+    setSortOrder(order);
+  };
+
+  const renderArrow = (column) => {
+    if (column === sortColumn) {
+      return sortOrder === "asc" ? "↑" : "↓";
+    }
+    return null;
+  };
 
   const handleRowClick = (coinSymbol) => {
     router.push(`/portfolio/${coinSymbol.toLowerCase()}`);
-  };
-  const sortByColumn = (column) => {
-    const sortedData = [...coinsData].sort((a, b) => {
-      let valueA, valueB;
-
-      switch (column) {
-        case "name":
-          valueA = a.name.toLowerCase();
-          valueB = b.name.toLowerCase();
-          break;
-        case "amount":
-          valueA = a.amount;
-          valueB = b.amount;
-          break;
-        case "price":
-          valueA = a.price;
-          valueB = b.price;
-          break;
-        case "change":
-          valueA = a.change;
-          valueB = b.change;
-          break;
-        case "avgPrice":
-          valueA = a.price;
-          valueB = b.price;
-          break;
-        case "total":
-          valueA = a.price * a.amount;
-          valueB = b.price * b.amount;
-          break;
-        default:
-          return 0;
-      }
-
-      if (typeof valueA === "string" && typeof valueB === "string") {
-        return sortOrder === "asc"
-          ? valueA.localeCompare(valueB)
-          : valueB.localeCompare(valueA);
-      }
-
-      return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
-    });
-
-    setCoinsData(sortedData);
-    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
 
   return (
@@ -159,37 +41,37 @@ const Table = () => {
             onClick={() => sortByColumn("name")}
             className={(styles.nameColumn, styles.headerCells)}
           >
-            Name
+            Name {renderArrow("name")}
           </td>
           <td
             className={styles.headerCells}
             onClick={() => sortByColumn("amount")}
           >
-            Amount
+            Amount {renderArrow("amount")}
           </td>
           <td
             onClick={() => sortByColumn("price")}
             className={styles.headerCells}
           >
-            Price
+            Price {renderArrow("price")}
           </td>
           <td
             onClick={() => sortByColumn("change")}
             className={styles.headerCells}
           >
-            24h Change
+            24h Change {renderArrow("change")}
           </td>
           <td
             className={styles.headerCells}
             onClick={() => sortByColumn("avgPrice")}
           >
-            Avg Price
+            Avg Price {renderArrow("avgPrice")}
           </td>
           <td
             className={styles.headerCells}
             onClick={() => sortByColumn("total")}
           >
-            Total
+            Total {renderArrow("total")}
           </td>
         </tr>
       </thead>

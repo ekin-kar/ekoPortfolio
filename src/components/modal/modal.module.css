@@ -11,6 +11,13 @@
   z-index: 9999;
 }
 
+.form {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .modalContent {
   width: 45%;
   height: 60%;

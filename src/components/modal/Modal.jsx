@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./modal.module.css";
 import CoinSearch from "../coinSearch/CoinSearch";
+import { newTransaction } from "@/lib/actions";
 
 const Modal = ({ isOpen, onClose }) => {
+  const [selectedCoinId, setSelectedCoinId] = useState(null);
+
+  const handleSelectedCoin = (coinId) => {
+    setSelectedCoinId(coinId);
+  };
   const handleModalClose = () => {
     onClose();
   };
@@ -17,58 +23,63 @@ const Modal = ({ isOpen, onClose }) => {
     <>
       {isOpen && (
         <div className={styles.modalOverlay} onClick={handleBackdropClick}>
-          <div className={styles.modalContent}>
-            <div className={styles.header}>
-              <h2 className={styles.title}>ADD A NEW PURCHASE</h2>
-              <button onClick={handleModalClose} className={styles.closeBtn}>
-                x
-              </button>
-            </div>
-            <hr className={styles.hr} />
-            <div className={styles.body}>
-              <div className={styles.formContainer}>
-                <CoinSearch />
-                <div className={styles.inputs}>
-                  <div className={styles.inputContainer}>
-                    <label className={styles.label} htmlFor="price">
-                      Price:
-                    </label>
-                    <input
-                      id="price"
-                      className={styles.input}
-                      type="number"
-                      placeholder="Enter the price"
-                    />
+          <form className={styles.form} action={newTransaction}>
+            <div className={styles.modalContent}>
+              <div className={styles.header}>
+                <h2 className={styles.title}>ADD A NEW PURCHASE</h2>
+                <button onClick={handleModalClose} className={styles.closeBtn}>
+                  x
+                </button>
+              </div>
+              <hr className={styles.hr} />
+              <div className={styles.body}>
+                <div className={styles.formContainer}>
+                  <CoinSearch onSelectedCoin={handleSelectedCoin} />
+                  <div className={styles.inputs}>
+                    <div className={styles.inputContainer}>
+                      <label className={styles.label} htmlFor="price">
+                        Price:
+                      </label>
+                      <input
+                        name="coin"
+                        id="price"
+                        className={styles.input}
+                        type="number"
+                        placeholder="Enter the price"
+                      />
+                    </div>
+                    <div className={styles.inputContainer}>
+                      <label className={styles.label} htmlFor="quantity">
+                        Quantity:
+                      </label>
+                      <input
+                        name="quantity"
+                        id="quantity"
+                        className={styles.input}
+                        placeholder="Enter the quantity"
+                        type="number"
+                      />
+                    </div>
                   </div>
                   <div className={styles.inputContainer}>
-                    <label className={styles.label} htmlFor="quantity">
-                      Quantity:
+                    <label className={styles.label} htmlFor="notes">
+                      Notes:
                     </label>
-                    <input
-                      id="quantity"
-                      className={styles.input}
-                      placeholder="Enter the quantity"
-                      type="number"
+                    <textarea
+                      name="notes"
+                      id="notes"
+                      className={styles.textarea}
+                      type="text"
+                      placeholder="Your notes..."
                     />
                   </div>
-                </div>
-                <div className={styles.inputContainer}>
-                  <label className={styles.label} htmlFor="notes">
-                    Notes:
-                  </label>
-                  <textarea
-                    id="notes"
-                    className={styles.textarea}
-                    type="text"
-                    placeholder="Your notes..."
-                  />
                 </div>
               </div>
+              <div className={styles.footer}>
+                <button className={styles.button}>Save</button>
+              </div>
             </div>
-            <div className={styles.footer}>
-              <button className={styles.button}>Save</button>
-            </div>
-          </div>
+          </form>
         </div>
       )}
     </>
