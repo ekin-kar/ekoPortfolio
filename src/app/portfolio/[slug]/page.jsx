@@ -1,11 +1,13 @@
 "use client";
 import Card from "@/components/card/Card";
 import styles from "./slug.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import fetchAndLogSymbolPrice from "@/lib/binanceUtils";
 
 const Coin = () => {
   const [profitPercentage, setProfitPercentage] = useState("");
   const [investment, setInvestment] = useState(100.1);
+  const [coinData, setCoinData] = useState({});
 
   const calculateSellingPrice = () => {
     const sellingPrice = investment * (1 + profitPercentage / 100);
@@ -18,6 +20,23 @@ const Coin = () => {
         .replace(/\.$/, "");
     }
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchAndLogSymbolPrice();
+        setCoinData(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    // Fetch data only when the component mounts
+    if (!coinData.symbol) {
+      fetchData();
+    }
+
+    console.log(coinData);
+  }, [coinData]);
 
   const handleProfitChange = (e) => {
     let input = e.target.value;
@@ -77,6 +96,33 @@ const Coin = () => {
       worth: 60000,
       date: "2024-03-02 23:00",
       profit: 5000,
+    },
+  ];
+
+  const orders = [
+    {
+      type: "Buy",
+      quantity: 2,
+      price: 55000,
+      worth: 110000,
+      date: "2024-03-01 23:00",
+      filled: "0/2 BTC",
+    },
+    {
+      type: "Buy",
+      quantity: 3,
+      price: 50000,
+      worth: 150000,
+      date: "2024-03-01 23:00",
+      filled: "0/3 BTC",
+    },
+    {
+      type: "Sell",
+      quantity: 1,
+      price: 60000,
+      worth: 60000,
+      date: "2024-03-02 23:00",
+      filled: "0/1 BTC",
     },
   ];
 
@@ -141,8 +187,39 @@ const Coin = () => {
           </div>
         </Card>
       </div>
-      <div className={styles.transactions}>
+      <Card>
+        <button className={styles.button}>Add New Order</button>
+      </Card>
+      <div className={styles.tablesWrapper}>
+        <Card className={styles.ordersCard}>
+          <h3 className={styles.tableHeaders}>Orders</h3>
+          <table className={styles.table}>
+            <thead>
+              <tr className={styles.headRow}>
+                <td className={styles.headerCells}>Type</td>
+                <td className={styles.headerCells}>Quantity</td>
+                <td className={styles.headerCells}>Price</td>
+                <td className={styles.headerCells}>Worth</td>
+                <td className={styles.headerCells}>Date</td>
+                <td className={styles.headerCells}>Filled</td>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order, index) => (
+                <tr key={index} className={styles.rows}>
+                  <td className={styles.columns}>{order.type}</td>
+                  <td className={styles.columns}>{order.quantity} BTC</td>
+                  <td className={styles.columns}>${order.price}</td>
+                  <td className={styles.columns}>${order.worth}</td>
+                  <td className={styles.columns}>{order.date}</td>
+                  <td className={styles.columns}>{order.filled}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Card>
         <Card className={styles.transactionsCard}>
+          <h3 className={styles.tableHeaders}>Transactions</h3>
           <table className={styles.table}>
             <thead>
               <tr className={styles.headRow}>

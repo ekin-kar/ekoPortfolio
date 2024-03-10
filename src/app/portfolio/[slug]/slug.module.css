@@ -63,15 +63,40 @@
   border-radius: 5px;
   border: 1px solid var(--text);
 }
+.button {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  background-color: var(--textSoft);
+  color: var(--text);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: var(--text);
+  color: var(--bg);
+}
 
-.transactionsCard {
+.transactionsCard,
+.ordersCard {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 15px;
+  padding: 20px;
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.tablesWrapper {
+  display: flex;
+  gap: 20px;
+}
+
+.tableHeaders {
+  margin: 5px;
 }
 
 .transaction {
