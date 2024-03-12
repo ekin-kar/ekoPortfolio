@@ -80,10 +80,10 @@ const getAssets = async () => {
             id: asset.asset,
             asset: asset.asset,
             free: asset.free,
-            price: price || "-",
-            priceChange: priceChange || "-",
-            currentAverage: currentAverage || "-",
-            totalWorth: totalWorth || "-",
+            price: price || "0",
+            priceChange: priceChange || "0",
+            currentAverage: currentAverage || "0",
+            totalWorth: totalWorth || "0",
             icon: `/${asset.asset.toLowerCase()}.png`,
           };
         } catch (error) {
@@ -103,10 +103,10 @@ const getAssets = async () => {
             id: asset.asset,
             asset: asset.asset,
             free: asset.free,
-            price: 0,
-            priceChange: 0,
-            currentAverage: 0,
-            totalWorth: 0,
+            price: "0",
+            priceChange: "0",
+            currentAverage: "0",
+            totalWorth: "0",
             icon: `/${asset.asset.toLowerCase()}.png`,
           };
         }

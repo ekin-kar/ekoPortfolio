@@ -8,24 +8,24 @@ export const sortData = (column, sortOrder, data) => {
         valueB = b.asset.toLowerCase();
         break;
       case "amount":
-        valueA = a.free;
-        valueB = b.free;
+        valueA = parseFloat(a.free);
+        valueB = parseFloat(b.free);
         break;
       case "price":
-        valueA = a.price;
-        valueB = b.price;
+        valueA = parseFloat(a.price);
+        valueB = parseFloat(b.price);
         break;
       case "change":
-        valueA = a.priceChange;
-        valueB = b.priceChange;
+        valueA = parseFloat(a.priceChange);
+        valueB = parseFloat(b.priceChange);
         break;
       case "avgPrice":
-        valueA = a.currentAverage;
-        valueB = b.currentAverage;
+        valueA = parseFloat(a.currentAverage);
+        valueB = parseFloat(b.currentAverage);
         break;
       case "total":
-        valueA = a.totalWorth;
-        valueB = b.totalWorth;
+        valueA = parseFloat(a.totalWorth);
+        valueB = parseFloat(b.totalWorth);
         break;
       default:
         return 0;

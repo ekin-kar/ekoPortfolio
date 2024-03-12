@@ -22,6 +22,10 @@ const Table = ({ handleTotalWorthChange }) => {
     setSortOrder(order);
   };
 
+  useEffect(() => {
+    console.log(coinsData);
+  }, [coinsData]);
+
   const renderArrow = (column) => {
     if (column === sortColumn) {
       return sortOrder === "asc" ? "↑" : "↓";

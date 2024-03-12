@@ -4,12 +4,10 @@ import Card from "@/components/card/Card";
 import styles from "./portfolio.module.css";
 import Table from "@/components/table/Table";
 import Modal from "@/components/modal/Modal";
-import { useRouter } from "next/navigation";
 
 const Portfolio = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [totalWorth, setTotalWorth] = useState(0);
-  const router = useRouter();
 
   const openModal = () => {
     setIsModalOpen(true);
