@@ -6,10 +6,8 @@
   text-align: center;
 }
 .container:hover {
-  background: var(--text);
-  color: var(--bg);
+  background: var(--textSoft);
 }
 .active {
-  background-color: var(--text);
-  color: var(--bg);
+  background-color: var(--textSoft);
 }

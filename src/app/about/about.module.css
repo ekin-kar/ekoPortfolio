@@ -1,0 +1,15 @@
+.title {
+  font-size: 2rem;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+}
+
+.paragraphWrapper {
+  margin-bottom: 3rem;
+}
+
+.paragraph {
+  font-size: 1.2rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}

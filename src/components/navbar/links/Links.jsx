@@ -18,7 +18,7 @@ const links = [
     path: "/about",
   },
   {
-    title: "Login",
+    title: "Logout",
     path: "/login",
   },
 ];
