@@ -12,7 +12,6 @@ const getSymbolPriceTicker = async (symbol) => {
     const price = await client.getSymbolPriceTicker({ symbol: symbol });
     return price.price;
   } catch (error) {
-    console.error("Error fetching the price:", error);
     throw error;
   }
 };
@@ -29,6 +28,27 @@ const getLotSize = async (symbol) => {
   return lotSize;
 };
 
+const getOpenOrders = async (symbol) => {
+  try {
+    const openOrders = await client.getOpenOrders({ symbol: symbol });
+    return openOrders;
+  } catch (error) {
+    console.error("Error fetching open orders:", error);
+    throw error;
+  }
+};
+
+const getPriceChange = async (symbol) => {
+  try {
+    const priceChange = await client.get24hrChangeStatististics({
+      symbol: symbol,
+    });
+    return priceChange.priceChangePercent.toFixed(2);
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Digits after the decimal point
 const getTickSize = async (symbol) => {
   const symbolInfo = await client.getExchangeInfo();
@@ -41,7 +61,64 @@ const getTickSize = async (symbol) => {
     0;
   return tickSize;
 };
+const getAssets = async () => {
+  try {
+    const accountInfo = await client.getAccountInformation();
+    const assetsWithBalance = accountInfo.balances.filter(
+      (asset) => asset.free > 0
+    );
 
+    const assets = await Promise.all(
+      assetsWithBalance.map(async (asset) => {
+        const symbol = `${asset.asset}USDT`;
+        try {
+          const price = await getSymbolPriceTicker(symbol);
+          const priceChange = await getPriceChange(symbol);
+          const { currentAverage } = await getCoinStats(symbol);
+          const totalWorth = (currentAverage * asset.free).toFixed(2);
+          return {
+            id: asset.asset,
+            asset: asset.asset,
+            free: asset.free,
+            price: price || "-",
+            priceChange: priceChange || "-",
+            currentAverage: currentAverage || "-",
+            totalWorth: totalWorth || "-",
+            icon: `/${asset.asset.toLowerCase()}.png`,
+          };
+        } catch (error) {
+          if (asset.asset === "USDT") {
+            return {
+              id: asset.asset,
+              asset: asset.asset,
+              free: asset.free.toFixed(2),
+              price: "1",
+              priceChange: "0",
+              currentAverage: "1",
+              totalWorth: asset.free.toFixed(2),
+              icon: `/${asset.asset.toLowerCase()}.png`,
+            };
+          }
+          return {
+            id: asset.asset,
+            asset: asset.asset,
+            free: asset.free,
+            price: 0,
+            priceChange: 0,
+            currentAverage: 0,
+            totalWorth: 0,
+            icon: `/${asset.asset.toLowerCase()}.png`,
+          };
+        }
+      })
+    );
+
+    return assets;
+  } catch (error) {
+    console.error("Error fetching account information:", error);
+    throw error;
+  }
+};
 const getCoinStats = async (symbol) => {
   try {
     let currentInvesment = 0;
@@ -105,23 +182,51 @@ const getCoinStats = async (symbol) => {
     throw error;
   }
 };
-
-const fetchAndLogSymbolPrice = async () => {
+const fetchAndLogSymbolPrice = async (symbol) => {
   try {
-    const symbol = "EDUUSDT";
-    const tickSize = await getTickSize(symbol);
     const price = await getSymbolPriceTicker(symbol);
     const lotSize = await getLotSize(symbol);
-    const coinStats = await getCoinStats(symbol);
+    const orders = await getOpenOrders(symbol);
+    const priceChange = await getPriceChange(symbol);
+
+    const {
+      transactions,
+      assetName,
+      assetBalance,
+      totalSpent,
+      currentInvestment,
+      totalUsdtFee,
+      totalBnbFees,
+      totalSymbolFee,
+      currentAverage,
+      realisedProfit,
+    } = await getCoinStats(symbol);
+    const tickSize = await getTickSize(symbol);
+
     return {
       symbol,
-      price: price.toFixed(tickSize),
+      price,
       lotSize,
-      coinStats,
+      tickSize,
+      transactions,
+      assetName,
+      assetBalance,
+      totalSpent,
+      currentInvestment,
+      totalUsdtFee,
+      totalBnbFees,
+      totalSymbolFee,
+      currentAverage,
+      realisedProfit,
+      orders,
+      priceChange,
     };
   } catch (error) {
     console.error("Error fetching symbol price:", error);
   }
 };
 
-module.exports = fetchAndLogSymbolPrice;
+module.exports = {
+  fetchAndLogSymbolPrice,
+  getAssets,
+};

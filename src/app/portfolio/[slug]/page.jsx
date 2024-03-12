@@ -2,12 +2,45 @@
 import Card from "@/components/card/Card";
 import styles from "./slug.module.css";
 import { useEffect, useState } from "react";
-import fetchAndLogSymbolPrice from "@/lib/binanceUtils";
+import Loading from "@/components/loading/Loading";
+import { usePathname } from "next/navigation";
 
 const Coin = () => {
   const [profitPercentage, setProfitPercentage] = useState("");
-  const [investment, setInvestment] = useState(100.1);
+  const [investment, setInvestment] = useState(0);
   const [coinData, setCoinData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [transactions, setTransactions] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const pathname = usePathname();
+
+  const extractSymbolFromPathname = (pathname) => {
+    const parts = pathname.split("/");
+    return parts[parts.length - 1];
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const symbol = extractSymbolFromPathname(pathname);
+        const res = await fetch(`http://localhost:3000/api/coin/${symbol}`, {
+          next: { revalidate: 3600 },
+        });
+        if (!res.ok) {
+          throw new Error("Something went wrong");
+        }
+        const data = await res.json();
+        setCoinData(data);
+        setInvestment(data.currentInvestment);
+        setTransactions(data.transactions);
+        setOrders(data.orders);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getData();
+  }, [pathname]);
 
   const calculateSellingPrice = () => {
     const sellingPrice = investment * (1 + profitPercentage / 100);
@@ -20,23 +53,6 @@ const Coin = () => {
         .replace(/\.$/, "");
     }
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchAndLogSymbolPrice();
-        setCoinData(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    // Fetch data only when the component mounts
-    if (!coinData.symbol) {
-      fetchData();
-    }
-
-    console.log(coinData);
-  }, [coinData]);
 
   const handleProfitChange = (e) => {
     let input = e.target.value;
@@ -48,205 +64,156 @@ const Coin = () => {
     }
   };
 
-  const transactionsData = [
-    {
-      type: "Buy",
-      quantity: 2,
-      price: 55000,
-      worth: 110000,
-      date: "2024-03-01 23:00",
-      profit: "-",
-    },
-    {
-      type: "Buy",
-      quantity: 3,
-      price: 50000,
-      worth: 150000,
-      date: "2024-03-01 23:00",
-      profit: "-",
-    },
-    {
-      type: "Sell",
-      quantity: 1,
-      price: 60000,
-      worth: 60000,
-      date: "2024-03-02 23:00",
-      profit: 5000,
-    },
-    {
-      type: "Buy",
-      quantity: 2,
-      price: 55000,
-      worth: 110000,
-      date: "2024-03-01 23:00",
-      profit: "-",
-    },
-    {
-      type: "Buy",
-      quantity: 3,
-      price: 50000,
-      worth: 150000,
-      date: "2024-03-01 23:00",
-      profit: "-",
-    },
-    {
-      type: "Sell",
-      quantity: 1,
-      price: 60000,
-      worth: 60000,
-      date: "2024-03-02 23:00",
-      profit: 5000,
-    },
-  ];
-
-  const orders = [
-    {
-      type: "Buy",
-      quantity: 2,
-      price: 55000,
-      worth: 110000,
-      date: "2024-03-01 23:00",
-      filled: "0/2 BTC",
-    },
-    {
-      type: "Buy",
-      quantity: 3,
-      price: 50000,
-      worth: 150000,
-      date: "2024-03-01 23:00",
-      filled: "0/3 BTC",
-    },
-    {
-      type: "Sell",
-      quantity: 1,
-      price: 60000,
-      worth: 60000,
-      date: "2024-03-02 23:00",
-      filled: "0/1 BTC",
-    },
-  ];
-
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.cardsWrapper}>
-        <Card className={styles.cardWrapper}>
-          <h3 className={styles.cardTitle}>Bitcoin - BTC</h3>
-          <div className={styles.changeWrapper}>
-            <p className={styles.midText}>$60000</p>
-            <p className={styles.profit}>+%5</p>
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className={styles.wrapper}>
+          <div className={styles.cardsWrapper}>
+            <div className={styles.cardColumn}>
+              <Card className={styles.cardWrapper}>
+                <h3 className={styles.cardTitle}>{coinData.symbol}</h3>
+                <div className={styles.changeWrapper}>
+                  <p className={styles.midText}>{coinData.price}$</p>
+                  <p
+                    className={
+                      coinData.priceChange > 0
+                        ? styles.positiveProfit
+                        : styles.negativeProfit
+                    }
+                  >
+                    {coinData.priceChange}%
+                  </p>
+                </div>
+              </Card>
+              <Card className={styles.cardWrapper}>
+                <h3 className={styles.cardTitle}>Quantity</h3>
+                <p className={styles.midText}>
+                  {coinData.assetBalance} {coinData.assetName}
+                </p>
+              </Card>
+              <Card className={styles.cardWrapper}>
+                <h3 className={styles.cardTitle}>Investment</h3>
+                <p className={styles.midText}>{coinData.currentInvestment}$</p>
+              </Card>
+              <Card className={styles.cardWrapper}>
+                <h3 className={styles.cardTitle}>Average Price</h3>
+                <p className={styles.midText}>{coinData.currentAverage}$</p>
+              </Card>
+            </div>
+            <div className={styles.cardColumn}>
+              <Card className={styles.cardWrapper}>
+                <h3 className={styles.cardTitle}>Profit</h3>
+                <div className={styles.profitWrapper}>
+                  <p className={styles.midText}>{coinData.realisedProfit}$</p>
+                </div>
+              </Card>
+              <Card className={styles.cardWrapper}>
+                <h3 className={styles.cardTitle}>Total Fees</h3>
+                <p className={styles.smallText}>
+                  {coinData.totalUsdtFee}$ - {coinData.totalSymbolFee}
+                  {coinData.assetName} - {coinData.totalBnbFees}BNB
+                </p>
+              </Card>
+              <Card className={styles.cardWrapper}>
+                <h3 className={styles.cardTitle}>All Time Invested</h3>
+                <p className={styles.midText}>{coinData.totalSpent}$</p>
+              </Card>
+              <Card className={styles.inputWrapper}>
+                <p className={styles.midText}>
+                  Selling Price: $ {calculateSellingPrice()}
+                </p>
+                <input
+                  className={styles.input}
+                  type="number"
+                  value={profitPercentage}
+                  onChange={handleProfitChange}
+                  placeholder="Enter profit percentage"
+                />
+              </Card>
+            </div>
           </div>
-        </Card>
-        <Card className={styles.cardWrapper}>
-          <h3 className={styles.cardTitle}>Quantity</h3>
-          <p className={styles.midText}>5 BTC</p>
-        </Card>
-        <Card className={styles.cardWrapper}>
-          <h3 className={styles.cardTitle}>Investment</h3>
-          <p className={styles.midText}>$250000</p>
-        </Card>
-        <Card className={styles.cardWrapper}>
-          <h3 className={styles.cardTitle}>Average Price</h3>
-          <p className={styles.midText}>$50000</p>
-        </Card>
-        <Card className={styles.cardWrapper}>
-          <h3 className={styles.cardTitle}>Profit</h3>
-          <div className={styles.profitWrapper}>
-            <p className={styles.midText}>$5600 </p>
-            <p className={styles.profit}>+%5</p>
+          <div className={styles.tablesWrapper}>
+            <Card className={styles.ordersCard}>
+              <h3 className={styles.tableHeaders}>Orders</h3>
+              {orders.length > 0 ? (
+                <table className={styles.table}>
+                  <thead className={styles.thead}>
+                    <tr className={styles.headRow}>
+                      <td className={styles.headerCells}>Type</td>
+                      <td className={styles.headerCells}>Quantity</td>
+                      <td className={styles.headerCells}>Price</td>
+                      <td className={styles.headerCells}>Worth</td>
+                      <td className={styles.headerCells}>Date</td>
+                      <td className={styles.headerCells}>Filled</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orders.map((order, index) => (
+                      <tr key={index} className={styles.rows}>
+                        <td className={styles.columns}>{order.type}</td>
+                        <td className={styles.columns}>
+                          {order.origQty} {coinData.assetName}
+                        </td>
+                        <td className={styles.columns}>${order.price}</td>
+                        <td className={styles.columns}>
+                          {Number(order.price * order.origQty).toFixed(2)}$
+                        </td>
+                        <td className={styles.columns}>
+                          {new Date(Number(order.time)).toLocaleString("tr-TR")}
+                        </td>
+                        <td className={styles.columns}>
+                          {order.executedQty} / {order.origQty}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p>No open orders</p>
+              )}
+            </Card>
+            <Card className={styles.transactionsCard}>
+              <h3 className={styles.tableHeaders}>Transactions</h3>
+              <table className={styles.table}>
+                <thead>
+                  <tr className={styles.headRow}>
+                    <td className={styles.headerCells}>Type</td>
+                    <td className={styles.headerCells}>Quantity</td>
+                    <td className={styles.headerCells}>Price</td>
+                    <td className={styles.headerCells}>Worth</td>
+                    <td className={styles.headerCells}>Date</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {transactions
+                    .slice()
+                    .reverse()
+                    .map((transaction, index) => (
+                      <tr key={index} className={styles.rows}>
+                        <td className={styles.columns}>
+                          {transaction.isBuyer ? "Buy" : "Sell"}
+                        </td>
+                        <td className={styles.columns}>{transaction.qty}</td>
+                        <td className={styles.columns}>{transaction.price}$</td>
+                        <td className={styles.columns}>
+                          {Number(transaction.quoteQty).toFixed(2)}$
+                        </td>
+                        <td className={styles.columns}>
+                          {new Date(Number(transaction.time)).toLocaleString(
+                            "tr-TR"
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </Card>
           </div>
-        </Card>
-        <Card className={styles.cardWrapper}>
-          <h3 className={styles.cardTitle}>Total Trades</h3>
-          <p className={styles.midText}>10</p>
-        </Card>
-        <Card className={styles.cardWrapper}>
-          <h3 className={styles.cardTitle}>All Time Quantity</h3>
-          <p className={styles.midText}>$500000</p>
-        </Card>
-        <Card className={styles.cardWrapper}>
-          <h3 className={styles.cardTitle}>All Time Invested</h3>
-          <p className={styles.midText}>$400000</p>
-        </Card>
-        <Card className={styles.inputWrapper}>
-          <p className={styles.midText}>
-            Selling Price: $ {calculateSellingPrice()}
-          </p>
-          <input
-            className={styles.input}
-            type="number"
-            value={profitPercentage}
-            onChange={handleProfitChange}
-            placeholder="Enter profit percentage"
-          />
-        </Card>
-        <Card className={styles.cardWrapper}>
-          <h3 className={styles.cardTitle}>All Time Profit</h3>
-          <div className={styles.profitWrapper}>
-            <p className={styles.midText}>$60000</p>
-            <p className={styles.profit}>+%5</p>
-          </div>
-        </Card>
-      </div>
-      <Card>
-        <button className={styles.button}>Add New Order</button>
-      </Card>
-      <div className={styles.tablesWrapper}>
-        <Card className={styles.ordersCard}>
-          <h3 className={styles.tableHeaders}>Orders</h3>
-          <table className={styles.table}>
-            <thead>
-              <tr className={styles.headRow}>
-                <td className={styles.headerCells}>Type</td>
-                <td className={styles.headerCells}>Quantity</td>
-                <td className={styles.headerCells}>Price</td>
-                <td className={styles.headerCells}>Worth</td>
-                <td className={styles.headerCells}>Date</td>
-                <td className={styles.headerCells}>Filled</td>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order, index) => (
-                <tr key={index} className={styles.rows}>
-                  <td className={styles.columns}>{order.type}</td>
-                  <td className={styles.columns}>{order.quantity} BTC</td>
-                  <td className={styles.columns}>${order.price}</td>
-                  <td className={styles.columns}>${order.worth}</td>
-                  <td className={styles.columns}>{order.date}</td>
-                  <td className={styles.columns}>{order.filled}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Card>
-        <Card className={styles.transactionsCard}>
-          <h3 className={styles.tableHeaders}>Transactions</h3>
-          <table className={styles.table}>
-            <thead>
-              <tr className={styles.headRow}>
-                <td className={styles.headerCells}>Type</td>
-                <td className={styles.headerCells}>Quantity</td>
-                <td className={styles.headerCells}>Price</td>
-                <td className={styles.headerCells}>Worth</td>
-                <td className={styles.headerCells}>Date</td>
-                <td className={styles.headerCells}>Profit</td>
-              </tr>
-            </thead>
-            <tbody>
-              {transactionsData.map((transaction, index) => (
-                <tr key={index} className={styles.rows}>
-                  <td className={styles.columns}>{transaction.type}</td>
-                  <td className={styles.columns}>{transaction.quantity} BTC</td>
-                  <td className={styles.columns}>${transaction.price}</td>
-                  <td className={styles.columns}>${transaction.worth}</td>
-                  <td className={styles.columns}>{transaction.date}</td>
-                  <td className={styles.columns}>{transaction.profit}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Card>
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 };
 export default Coin;

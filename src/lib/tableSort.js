@@ -4,28 +4,28 @@ export const sortData = (column, sortOrder, data) => {
 
     switch (column) {
       case "name":
-        valueA = a.name.toLowerCase();
-        valueB = b.name.toLowerCase();
+        valueA = a.asset.toLowerCase();
+        valueB = b.asset.toLowerCase();
         break;
       case "amount":
-        valueA = a.amount;
-        valueB = b.amount;
+        valueA = a.free;
+        valueB = b.free;
         break;
       case "price":
         valueA = a.price;
         valueB = b.price;
         break;
       case "change":
-        valueA = a.change;
-        valueB = b.change;
+        valueA = a.priceChange;
+        valueB = b.priceChange;
         break;
       case "avgPrice":
-        valueA = a.price;
-        valueB = b.price;
+        valueA = a.currentAverage;
+        valueB = b.currentAverage;
         break;
       case "total":
-        valueA = a.price * a.amount;
-        valueB = b.price * b.amount;
+        valueA = a.totalWorth;
+        valueB = b.totalWorth;
         break;
       default:
         return 0;
@@ -40,3 +40,5 @@ export const sortData = (column, sortOrder, data) => {
     return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
   });
 };
+
+export default sortData;

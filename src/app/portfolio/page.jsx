@@ -7,6 +7,7 @@ import Modal from "@/components/modal/Modal";
 
 const Portfolio = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [totalWorth, setTotalWorth] = useState(0);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -15,6 +16,9 @@ const Portfolio = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  const handleTotalWorthChange = (sum) => {
+    setTotalWorth(sum);
+  };
 
   return (
     <div className={styles.portfolio}>
@@ -22,8 +26,7 @@ const Portfolio = () => {
       <div className={styles.wrapper}>
         <div className={styles.worthCard}>
           <p className={styles.worth}>Total Worth</p>
-          <p className={styles.worthVal}>$50000</p>
-          <p className={styles.profit}>+%5</p>
+          <p className={styles.worthVal}>{totalWorth}$</p>
         </div>
         <div className={styles.buttonsWrapper}>
           <button className={styles.button}>Sync</button>
@@ -33,7 +36,7 @@ const Portfolio = () => {
         </div>
       </div>
       <Card>
-        <Table />
+        <Table onTotalWorthChange={handleTotalWorthChange} />
       </Card>
       <Modal isOpen={isModalOpen} onClose={closeModal} />
     </div>
