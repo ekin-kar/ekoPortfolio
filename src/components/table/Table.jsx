@@ -6,11 +6,10 @@ import { useRouter } from "next/navigation";
 import { sortData } from "@/lib/tableSort";
 import Loading from "../loading/Loading";
 
-const Table = ({ onTotalWorthChange }) => {
+const Table = ({ handleTotalWorthChange }) => {
   const [coinsData, setCoinsData] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortColumn, setSortColumn] = useState(null);
-  const [totalWorthSum, setTotalWorthSum] = useState(0);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -52,8 +51,7 @@ const Table = ({ onTotalWorthChange }) => {
           }
           return acc.toFixed(2);
         }, 0);
-        setTotalWorthSum(sum);
-        onTotalWorthChange(sum);
+        handleTotalWorthChange(sum.toFixed(2));
         setLoading(false);
       } catch (error) {
         console.error(error);

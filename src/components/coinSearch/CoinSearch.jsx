@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import styles from "./coinSearch.module.css";
 import { coins } from "@/lib/data";
+import { useRouter } from "next/navigation";
 
 const CoinSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCoin, setSelectedCoin] = useState("");
+  const router = useRouter();
 
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
-    setSelectedCoin("");
   };
 
   const handleCoinClick = (coin) => {
-    setSelectedCoin(coin.name);
-    setSearchTerm("");
+    router.push(`/portfolio/${coin.symbol.toUpperCase()}`);
   };
 
   const filteredCoins = coins.filter(
@@ -21,13 +20,6 @@ const CoinSearch = () => {
       coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const sortedCoins = selectedCoin
-    ? [
-        coins.find((coin) => coin.name === selectedCoin),
-        ...filteredCoins.filter((coin) => coin.name !== selectedCoin),
-      ]
-    : filteredCoins;
 
   return (
     <div className={styles.container}>
@@ -37,19 +29,14 @@ const CoinSearch = () => {
           type="text"
           name="CoinName"
           placeholder="Search coin..."
-          value={selectedCoin ? selectedCoin : searchTerm}
+          value={searchTerm}
           onChange={handleInputChange}
-          onClick={() => setSelectedCoin("")}
         />
       </div>
       <div className={styles.coinListContainer}>
         <ul className={styles.coinList}>
-          {sortedCoins.map((coin) => (
-            <li
-              key={coin.symbol}
-              onClick={() => handleCoinClick(coin)}
-              className={selectedCoin === coin.name ? styles.selectedCoin : ""}
-            >
+          {filteredCoins.map((coin) => (
+            <li key={coin.symbol} onClick={() => handleCoinClick(coin)}>
               {coin.name} - {coin.symbol}
             </li>
           ))}

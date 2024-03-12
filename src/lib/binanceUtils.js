@@ -129,6 +129,7 @@ const getCoinStats = async (symbol) => {
     let totalSpent = 0;
     let currentAverage = 0;
     let realisedProfit = 0;
+    let profit = 0;
 
     const transactions = await client.getAccountTradeList({ symbol: symbol });
     const assetName = symbol.replace("USDT", "");
@@ -152,10 +153,12 @@ const getCoinStats = async (symbol) => {
         totalSpent += amount;
         totalBuys += qty;
         currentInvesment += amount;
+        profit -= amount;
         currentAverage = (currentInvesment / totalBuys).toFixed(4);
       } else {
         realisedProfit += (price - currentAverage) * qty;
         totalBuys = totalBuys - qty;
+        profit += amount;
         if (totalBuys === 0) {
           currentAverage = 0;
           currentInvesment = 0;
@@ -170,12 +173,13 @@ const getCoinStats = async (symbol) => {
       assetName,
       assetBalance: assetBalance.toFixed(tickSize),
       totalSpent: totalSpent.toFixed(2),
-      currentInvestment: currentInvesment.toFixed(2),
+      currentInvestment: assetBalance === 0 ? 0 : currentInvesment.toFixed(2),
       totalUsdtFee: totalUsdtFee.toFixed(2),
       totalBnbFees: totalBnbFees.toFixed(4),
-      totalSymbolFee,
-      currentAverage,
-      realisedProfit: realisedProfit.toFixed(2),
+      totalSymbolFee: totalSymbolFee.toFixed(tickSize),
+      currentAverage: assetBalance === 0 ? 0 : currentAverage,
+      realisedProfit:
+        assetBalance === 0 ? profit.toFixed(2) : realisedProfit.toFixed(2),
     };
   } catch (error) {
     console.error("Error fetching coin stats:", error);

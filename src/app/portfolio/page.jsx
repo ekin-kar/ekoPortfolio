@@ -4,10 +4,12 @@ import Card from "@/components/card/Card";
 import styles from "./portfolio.module.css";
 import Table from "@/components/table/Table";
 import Modal from "@/components/modal/Modal";
+import { useRouter } from "next/navigation";
 
 const Portfolio = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [totalWorth, setTotalWorth] = useState(0);
+  const router = useRouter();
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -16,8 +18,8 @@ const Portfolio = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const handleTotalWorthChange = (sum) => {
-    setTotalWorth(sum);
+  const handleTotalWorthChange = (totalWorthValue) => {
+    setTotalWorth(totalWorthValue);
   };
 
   return (
@@ -29,14 +31,13 @@ const Portfolio = () => {
           <p className={styles.worthVal}>{totalWorth}$</p>
         </div>
         <div className={styles.buttonsWrapper}>
-          <button className={styles.button}>Sync</button>
           <button className={styles.button} onClick={openModal}>
-            Add New Coin
+            Search for a coin
           </button>
         </div>
       </div>
       <Card>
-        <Table onTotalWorthChange={handleTotalWorthChange} />
+        <Table handleTotalWorthChange={handleTotalWorthChange} />
       </Card>
       <Modal isOpen={isModalOpen} onClose={closeModal} />
     </div>
