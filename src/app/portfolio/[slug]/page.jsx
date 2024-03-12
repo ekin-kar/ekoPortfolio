@@ -31,7 +31,7 @@ const Coin = () => {
         }
         const data = await res.json();
         setCoinData(data);
-        setInvestment(data.currentInvestment);
+        setInvestment(data.currentAverage);
         setTransactions(data.transactions);
         setOrders(data.orders);
         setLoading(false);
