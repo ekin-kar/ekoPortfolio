@@ -1,3 +1,25 @@
+# EkoPortfolio
+
+A portfolio tracker that enables you to track your trades and your average price.  
+Developed with Next.js for personal use.
+
+## Screenshots from the app
+
+Portfolio Page that you can view your current holdings.
+
+![Screenshot_3](https://github.com/EkinKar/ekoPortfolio/assets/56177544/1f52579f-cf17-46b9-bec0-d3a8d304800a)
+
+Detailed coin stats
+
+![Screenshot_4](https://github.com/EkinKar/ekoPortfolio/assets/56177544/7f179c2b-e433-4680-be40-259db978c47b)
+
+It is possible to obtain statistics or information about a coin using the search coin button, even if you do not currently own the coin. For example ARKM isnt in my portfolio
+
+![Screenshot_5](https://github.com/EkinKar/ekoPortfolio/assets/56177544/7abcbee1-49cf-4bc3-ba75-c020d4f4675c)
+
+***
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
